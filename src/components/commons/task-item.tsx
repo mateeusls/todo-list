@@ -8,9 +8,20 @@ import XIcon from "../../assets/icons/x.svg?react";
 import CheckIcon from "../../assets/icons/check.svg?react";
 import React from "react";
 import { InputText } from "../input-text";
+import { TaskState, type Task } from "../../models/task";
+import { cx } from "class-variance-authority";
+import { useTask } from "../../hooks/use-task";
 
-export function TaskItem() {
-  const [isEditing, setIsEditing] = React.useState(false);
+interface TaskItemProps {
+  task: Task;
+}
+
+export function TaskItem({ task }: TaskItemProps) {
+  const [isEditing, setIsEditing] = React.useState(
+    task.state === TaskState.Creating
+  );
+  const [taskTitle, setTaskTitle] = React.useState(task.title || "");
+  const { updateTask } = useTask();
 
   function handleEditTask() {
     setIsEditing(true);
@@ -20,12 +31,24 @@ export function TaskItem() {
     setIsEditing(false);
   }
 
+  function handleChangeTaskTitle(event: React.ChangeEvent<HTMLInputElement>) {
+    setTaskTitle(event.target.value || "");
+  }
+
+  function handleSaveTask(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    updateTask(task.id, { title: taskTitle });
+    setIsEditing(false);
+  }
+
   return (
-    <Card size="md" className="flex items-center gap-4">
+    <Card size="md">
       {!isEditing ? (
-        <>
-          <InputCheckbox />
-          <Text className="flex-1">🛒 Fazer compras da semana</Text>
+        <div className="flex items-center gap-4">
+          <InputCheckbox value={task?.concluded?.toString()} />
+          <Text className={cx("flex-1", { "line-through": task?.concluded })}>
+            {task?.title}
+          </Text>
           <div className="flex gap-1">
             <ButtonIcon icon={TrashIcon} variant="tertiary" />
             <ButtonIcon
@@ -34,19 +57,25 @@ export function TaskItem() {
               onClick={handleEditTask}
             />
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <InputText className="flex-1" />
+        <form onSubmit={handleSaveTask} className="flex items-center gap-4">
+          <InputText
+            className="flex-1"
+            onChange={handleChangeTaskTitle}
+            value={taskTitle}
+            autoFocus
+          />
           <div className="flex gap-1">
             <ButtonIcon
+              type="button"
               icon={XIcon}
               variant="secondary"
               onClick={handleCancelEditTask}
             />
-            <ButtonIcon icon={CheckIcon} variant="primary" />
+            <ButtonIcon type="submit" icon={CheckIcon} variant="primary" />
           </div>
-        </>
+        </form>
       )}
     </Card>
   );
