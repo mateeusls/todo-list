@@ -24,8 +24,26 @@ export function useTask() {
     setTasks(updatedTasks);
   }
 
+  function updateTaskStatus(id: string, concluded: boolean) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, concluded };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+  }
+
+  function deleteTask(id: string) {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+  }
+
   return {
     prepareTask,
     updateTask,
+    updateTaskStatus,
+    deleteTask
   };
 }
