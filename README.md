@@ -4,11 +4,11 @@ A simple and efficient Todo List application built with React.
 
 ## Features
 
-- ⚠️ Add new tasks
-- ⚠️ Mark tasks as complete
-- ⚠️ Delete tasks
-- ⚠️ Filter tasks (all, active, completed)
-- ⚠️ Persistent storage
+- ✅ Add new tasks
+- ✅ Mark tasks as complete
+- ✅ Delete tasks
+- ✅ Filter tasks (all, active, completed)
+- ✅ Persistent storage
 
 ## Installation
 
