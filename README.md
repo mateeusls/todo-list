@@ -1,5 +1,7 @@
 # Todo List
 
+<img width="1920" height="1080" alt="Thumbnail (1)" src="https://github.com/user-attachments/assets/fac9deb3-0eab-40d9-8261-f0cd55d7ebbd" />
+
 A simple and efficient Todo List application built with React.
 
 ## Features
